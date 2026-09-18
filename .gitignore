@@ -1,0 +1,9 @@
+# Ignore environment variables and API keys
+.env
+.ipynb_checkpoints
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore all log files
+*.log
