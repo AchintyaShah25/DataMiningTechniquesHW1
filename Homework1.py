@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from ucimlrepo import fetch_ucirepo
 from collections import Counter
-
+import time
 train_size = 0.8
+start_time = time.time()
 
 def data_acquisition():
     iris = fetch_ucirepo(id=53) 
@@ -170,19 +171,20 @@ class ConfusionMatrix:
 
 def pipeline():
     X, y = data_acquisition()
-    data_plot(X, y, save=True)
     X_train, X_test, y_train, y_test = tts(X, y, train_size)
     knn = KNN(k=3)
     knn.fit(X_train, y_train)
     y_pred = knn.predict(X_test)
     cm = ConfusionMatrix(y_test, y_pred, labels=list(y.unique()))
-    print(cm)
-    cm.plot()
-    cm.save()
+    # print(cm)
+    # cm.plot()
     metrics = cm.get_metrics()
-    print(metrics)
+    # print(metrics)
     print(f"Accuracy is {float(metrics['Overall']['Accuracy']) * 100}%")
-    return metrics
+    end_time = time.time()
+    data_plot(X, y)
+    return metrics, end_time
 
 
-pipeline()
+m, end_time = pipeline()
+print(f"Elapsed time = {end_time - start_time}")
